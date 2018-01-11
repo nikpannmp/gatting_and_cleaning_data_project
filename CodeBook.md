@@ -1,8 +1,8 @@
-###Getting and Cleaning Data Course Project Codebook
+## Getting and Cleaning Data Course Project Codebook
 
-#Code book that describes the variables, the data, and any transformations or work that has been performed to clean up the data
+### Code book that describes the variables, the data, and any transformations or work that has been performed to clean up the data
 
-##Data
+### Data
 
 Data Set Information
 The experiments have been carried out with a group of 30 volunteers within an age bracket of 19-48 years. Each person performed six activities (WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING) wearing a smartphone (Samsung Galaxy S II) on the waist. Using its embedded accelerometer and gyroscope, we captured 3-axial linear acceleration and 3-axial angular velocity at a constant rate of 50Hz. The experiments have been video-recorded to label the data manually. The obtained dataset has been randomly partitioned into two sets, where 70% of the volunteers was selected for generating the training data and 30% the test data.
@@ -16,7 +16,7 @@ For each record it is provided:
 - Its activity label. 
 - An identifier of the subject who carried out the experiment.
 
-##Variables
+## Variables
 x_train, y_train, x_test, y_test, subject_train and subject_test contain the data from the downloaded files.
 x_data, y_data and subject_data merge the previous datasets to further analysis.
 features contains the correct names for the x_data dataset, which are applied to the column names stored in mean_and_std_features, a numeric vector used to extract the desired data.
@@ -24,7 +24,7 @@ A similar approach is taken with activity names through the activities variable.
 all_data merges x_data, y_data and subject_data in a big dataset.
 Finally, averages_data contains the relevant averages which will be later stored in a .txt file. ddply() from the plyr package is used to apply colMeans() and ease the development.
 
-##Transformations
+## Transformations
 Merges the training and the test sets to create one data set.
 Extracts only the measurements on the mean and standard deviation for each measurement.
 Uses descriptive activity names to name the activities in the data set
