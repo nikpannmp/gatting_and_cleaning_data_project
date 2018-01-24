@@ -13,41 +13,41 @@ if (!file.exists("UCI HAR Dataset")) {
 }
 
 #Load activity labels and features
-activityLabels <- read.table("UCI HAR Dataset/activity_labels.txt")
-activityLabels[,2] <- as.character(activityLabels[,2])
-features <- read.table("UCI HAR Dataset/features.txt")
-features[,2] <- as.character(features[,2])
+activ.labels <- read.table("UCI HAR Dataset/activity_labels.txt")
+activ.labels[,2] <- as.character(activ.labels[,2])
+feat <- read.table("UCI HAR Dataset/features.txt")
+feat[,2] <- as.character(features[,2])
 
 #Extracts only information relevant to mean and standard deviation
-featuresWanted <- grep(".*mean.*|.*std.*", features[,2])
-featuresWanted.names <- features[featuresWanted,2]
-featuresWanted.names = gsub('-mean', 'Mean', featuresWanted.names)
-featuresWanted.names = gsub('-std', 'Std', featuresWanted.names)
-featuresWanted.names <- gsub('[-()]', '', featuresWanted.names)
+feat.wanted <- grep(".*mean.*|.*std.*", feat[,2])
+feat.wanted.names <- features[feat.wanted,2]
+feat.wanted.names = gsub('-mean', 'Mean', feat.wanted.names)
+feat.wanted.names = gsub('-std', 'Std', feat.wanted.names)
+feat.wanted.names <- gsub('[-()]', '', feat.wanted.names)
 
 #Loads activity and subject data
-train <- read.table("UCI HAR Dataset/train/X_train.txt")[featuresWanted]
-trainActivities <- read.table("UCI HAR Dataset/train/Y_train.txt")
-trainSubjects <- read.table("UCI HAR Dataset/train/subject_train.txt")
-train <- cbind(trainSubjects, trainActivities, train)
+train <- read.table("UCI HAR Dataset/train/X_train.txt")[feat.wanted]
+train.activities <- read.table("UCI HAR Dataset/train/Y_train.txt")
+train.subjects <- read.table("UCI HAR Dataset/train/subject_train.txt")
+train <- cbind(train.subjects, train.activities, train)
 
-test <- read.table("UCI HAR Dataset/test/X_test.txt")[featuresWanted]
-testActivities <- read.table("UCI HAR Dataset/test/Y_test.txt")
-testSubjects <- read.table("UCI HAR Dataset/test/subject_test.txt")
-test <- cbind(testSubjects, testActivities, test)
+test <- read.table("UCI HAR Dataset/test/X_test.txt")[feat.wanted]
+test.activities <- read.table("UCI HAR Dataset/test/Y_test.txt")
+test.subjects <- read.table("UCI HAR Dataset/test/subject_test.txt")
+test <- cbind(test.subjects, test.activities, test)
 
 #Merges datasets and add labels
-allData <- rbind(train, test)
-colnames(allData) <- c("subject", "activity", featuresWanted.names)
+merged <- rbind(train, test)
+colnames(merged) <- c("subject", "activity", feat.wanted.names)
 
 #Converts the activity and subject columns into factors
-allData$activity <- factor(allData$activity, levels = activityLabels[,1], labels = activityLabels[,2])
-allData$subject <- as.factor(allData$subject)
+merged$activity <- factor(merged$activity, levels = activ.labels[,1], labels = activ.labels[,2])
+merged$subject <- as.factor(merged$subject)
 
 ##Melt data using reshape2 library
-allData.melted <- melt(allData, id = c("subject", "activity"))
-allData.mean <- dcast(allData.melted, subject + activity ~ variable, mean)
+merged.melted <- melt(merged, id = c("subject", "activity"))
+merged.mean <- dcast(merged.melted, subject + activity ~ variable, mean)
 
 #Writes the final result to tidy.txt
-write.table(allData.mean, "tidy.txt", row.names = FALSE, quote = FALSE)
+write.table(merged.mean, "tidy.txt", row.names = FALSE, quote = FALSE)
 
